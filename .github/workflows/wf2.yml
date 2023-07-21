@@ -1,4 +1,4 @@
-name: wf1
+name: wf2
 on:
   workflow_dispatch:
   workflow_call:
