@@ -1,0 +1,41 @@
+name: parent
+on:
+  workflow_dispatch:
+
+jobs:
+  wf1:
+    uses: ./.github/workflows/wf1.yml
+    secrets: inherit
+  
+  wf2:
+    uses: ./.github/workflows/wf2.yml
+    secrets: inherit
+    
+  merge:
+    runs-on: macos-latest
+    needs: [wf1, wf2]
+    steps:
+      - name: Download MacOS
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: parent.yml
+          workflow_conclusion: ""#success
+          check_artifacts: true
+          branch: master
+          name: artifact-macos
+          if_no_artifact_found: fail
+    
+      - name: Download Windows
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: parent.yml
+          workflow_conclusion: ""#success
+          check_artifacts: true
+          branch: master
+          name: artifact-windows
+          if_no_artifact_found: fail
+    
+      - name: Show Files
+        run: find .
+        
+        
