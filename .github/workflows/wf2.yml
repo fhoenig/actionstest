@@ -8,7 +8,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: create-file
-      run: echo 'Hello MacOS' > macos.txt
+      run: date > macos.txt
     - name: 'Store Artifact'
       uses: actions/upload-artifact@v3
       with:
