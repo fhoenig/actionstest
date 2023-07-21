@@ -19,7 +19,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: parent.yml
-          workflow_conclusion: ""#success
+          workflow_conclusion: ""
           check_artifacts: true
           branch: master
           name: artifact-windows
@@ -29,13 +29,16 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: parent.yml
-          workflow_conclusion: ""#success
+          workflow_conclusion: ""
           check_artifacts: true
           branch: master
           name: artifact-macos
           if_no_artifact_found: fail
     
       - name: Show Files
-        run: find .
+        run: | 
+          find .
+          cat windows.txt
+          cat macos.txt
         
         
