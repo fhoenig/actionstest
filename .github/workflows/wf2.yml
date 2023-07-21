@@ -1,0 +1,17 @@
+name: wf1
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  greet:
+    runs-on: macos-latest
+    steps:
+    - name: create-file
+      run: echo 'Hello MacOS' > macos.txt
+    - name: 'Store Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact-macos
+        path: macos.txt
+    
