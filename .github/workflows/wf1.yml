@@ -1,0 +1,17 @@
+name: wf1
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  greet:
+    runs-on: windows-latest
+    steps:
+    - name: create-file
+      run: echo Hello Windows > windows.txt
+    - name: 'Store Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact-windows
+        path: windows.txt
+    
