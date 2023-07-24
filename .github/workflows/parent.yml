@@ -3,37 +3,41 @@ on:
   workflow_dispatch:
 
 jobs:
-  wf1:
-    uses: ./.github/workflows/wf1.yml
-    secrets: inherit
-  
-  wf2:
-    uses: ./.github/workflows/wf2.yml
-    secrets: inherit
-    
+  greet-windows:
+    runs-on: windows-latest
+    steps:
+    - name: create-file
+      run: echo Hello Windows > windows.txt
+    - name: 'Store Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact-windows
+        path: windows.txt    
+        
+  greet-macos:
+    runs-on: macos-latest
+    steps:
+    - name: create-file
+      run: date > macos.txt
+    - name: 'Store Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact-macos
+        path: macos.txt      
+        
   merge:
     runs-on: macos-latest
-    needs: [wf1, wf2]
+    needs: [greet-windows, greet-macos]
     steps:
       - name: Download Windows
-        uses: dawidd6/action-download-artifact@v2
+        uses: actions/download-artifact@v2.1.1
         with:
-          workflow: parent.yml
-          workflow_conclusion: ""
-          check_artifacts: true
-          branch: master
           name: artifact-windows
-          if_no_artifact_found: fail
     
       - name: Download MacOS
-        uses: dawidd6/action-download-artifact@v2
+        uses: actions/download-artifact@v2.1.1
         with:
-          workflow: parent.yml
-          workflow_conclusion: ""
-          check_artifacts: true
-          branch: master
           name: artifact-macos
-          if_no_artifact_found: fail
     
       - name: Show Files
         run: | 
